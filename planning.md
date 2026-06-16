@@ -88,13 +88,9 @@ A price judgment such as “good deal,” “fair price,” or “overpriced,”
 The agent skips the price score and only reports the listing’s actual price.
 
 
-Planning Loop
-
-The agent first reads the user’s request and extracts constraints like item type, style, size, color, and budget. It calls search_listings first, then evaluates the best results, passes the strongest item into suggest_outfit with the wardrobe, and finally calls create_fit_card to generate the final user-facing recommendation. If any step fails, the agent either retries with broader constraints, uses a fallback response, or asks the user for missing information.
-
 ## Planning Loop
 
-**How does your agent decide which tool to call next?**
+**How does your agent decide which tool to call next?** The agent first reads the user’s request and extracts constraints like item type, style, size, color, and budget. It calls search_listings first, then evaluates the best results, passes the strongest item into suggest_outfit with the wardrobe, and finally calls create_fit_card to generate the final user-facing recommendation. If any step fails, the agent either retries with broader constraints, uses a fallback response, or asks the user for missing information.
 <!-- Describe the logic your planning loop uses. What does it look at? What conditions change its behavior? How does it know when it's done? -->
 
 ---
