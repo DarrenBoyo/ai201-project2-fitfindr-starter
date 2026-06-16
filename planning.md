@@ -14,19 +14,20 @@ You must have at least 3 tools. The three required tools are listed — add any 
 
 ### Tool 1: search_listings
 
-**What it does:**
+**What it does:** Searches the secondhand listings dataset foritems that match the users's request.
 <!-- Describe what this tool does in 1–2 sentences -->
 
 **Input parameters:**
 <!-- List each parameter, its type, and what it represents -->
-- `description` (str): ...
-- `size` (str): ...
-- `max_price` (float): ...
+- `description` (str): Natural language description of what the user wants.
+- `size` (str): Desired size or fit.
+- `max_price` (float): Highest price the user is willing to pay.
 
-**What it returns:**
+  
+**What it returns:** A list of matching listing dictionaries, including id, title, description, category, style_tags, size, condition, price, colors, brand and platform
 <!-- Describe the return value — what fields does a result contain? -->
 
-**What happens if it fails or returns nothing:**
+**What happens if it fails or returns nothing:** The agent explains that no strong matches were found, broadens the search if possible, or asks the user to relax filters such as size, price, color, or style.
 <!-- What should the agent do if no listings match? -->
 
 ---
