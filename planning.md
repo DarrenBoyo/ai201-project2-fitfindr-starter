@@ -34,35 +34,36 @@ You must have at least 3 tools. The three required tools are listed — add any 
 
 ### Tool 2: suggest_outfit
 
-**What it does:**
+**What it does:** Checks how a selected listing fits with the user’s wardrobe and suggests an outfit.
 <!-- Describe what this tool does in 1–2 sentences -->
 
 **Input parameters:**
 <!-- List each parameter, its type, and what it represents -->
-- `new_item` (dict): ...
-- `wardrobe` (dict): ...
+- `new_item` (dict): The listing selected from search_listings.
+- `wardrobe` (dict): The user’s wardrobe, containing an items list.
 
-**What it returns:**
+**What it returns:** An outfit recommendation using the new item plus compatible wardrobe pieces, with a short explanation of why the outfit works.
 <!-- Describe the return value -->
 
-**What happens if it fails or returns nothing:**
+**What happens if it fails or returns nothing:** The agent gives a general styling suggestion based only on the new item, or explains that it needs wardrobe data to make a personalized outfit.
 <!-- What should the agent do if the wardrobe is empty or no outfit can be suggested? -->
 
 ---
 
 ### Tool 3: create_fit_card
 
-**What it does:**
+**What it does:** Creates a shareable outfit description for the final recommendation.
 <!-- Describe what this tool does in 1–2 sentences -->
 
 **Input parameters:**
 <!-- List each parameter, its type, and what it represents -->
-- `outfit` (...): ...
+- `outfit` (dict): The outfit recommendation from suggest_outfit, including the new item, selected wardrobe pieces, styling notes, and reasoning.
 
-**What it returns:**
+
+**What it returns:** A concise fit card with the item, outfit pieces, styling description, price/value note, and recommendation.
 <!-- Describe the return value -->
 
-**What happens if it fails or returns nothing:**
+**What happens if it fails or returns nothing:** The agent returns a plain-text outfit summary instead of a formatted fit card.
 <!-- What should the agent do if the outfit data is incomplete? -->
 
 ---
@@ -71,7 +72,25 @@ You must have at least 3 tools. The three required tools are listed — add any 
 
 <!-- Copy the block above for any tools beyond the required three -->
 
----
+### Tool 4: evaluate_price
+
+**What it does:**
+Evaluates whether a listing seems like a good deal.
+
+**Input parameters:**
+listing (dict): The secondhand listing being evaluated.
+max_price (float): The user’s budget.
+
+**What it returns:**
+A price judgment such as “good deal,” “fair price,” or “overpriced,” with a short reason.
+
+**What happens if it fails or returns nothing:**
+The agent skips the price score and only reports the listing’s actual price.
+
+
+Planning Loop
+
+The agent first reads the user’s request and extracts constraints like item type, style, size, color, and budget. It calls search_listings first, then evaluates the best results, passes the strongest item into suggest_outfit with the wardrobe, and finally calls create_fit_card to generate the final user-facing recommendation. If any step fails, the agent either retries with broader constraints, uses a fallback response, or asks the user for missing information.
 
 ## Planning Loop
 
