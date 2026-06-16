@@ -125,7 +125,110 @@ For each tool, describe the specific failure mode you're handling and what the a
      sketch are all fine. You'll share this diagram with an AI tool when asking it to implement
      the planning loop and each individual tool. -->
 
----
+```
++------------------+
+|    User Query    |
++------------------+
+          |
+          | description, size, budget, style preferences
+          v
++------------------+
+|   Planning Loop  |
++------------------+
+          |
+          | stores user constraints
+          v
++------------------------------+
+| Session State                |
+|------------------------------|
+| query                        |
+| selected_item                |
+| outfit_suggestion            |
+| fit_card                     |
++------------------------------+
+          |
+          v
++----------------------------------------------+
+| search_listings(description, size, max_price)|
++----------------------------------------------+
+          |
+          | results=[]
+          +------------------------------+
+          |                              |
+          v                              |
+ [ERROR] No listings found               |
+          |                              |
+          v                              |
+ Return fallback response <--------------+
+          |
+          |
+          | results=[item1, item2, ...]
+          v
++------------------------------+
+| Session State Update         |
+| selected_item = results[0]   |
++------------------------------+
+          |
+          v
++--------------------------------------+
+| evaluate_price(selected_item)        |
++--------------------------------------+
+          |
+          | price evaluation
+          v
++------------------------------+
+| Session State Update         |
+| value_score = "good deal"    |
++------------------------------+
+          |
+          v
++--------------------------------------+
+| suggest_outfit(selected_item,        |
+| wardrobe)                            |
++--------------------------------------+
+          |
+          | wardrobe empty?
+          +------------------------------+
+          |                              |
+          v                              |
+ [WARNING] Empty wardrobe               |
+          |                              |
+          v                              |
+ Generate generic outfit <--------------+
+          |
+          |
+          v
++------------------------------+
+| Session State Update         |
+| outfit_suggestion            |
++------------------------------+
+          |
+          v
++--------------------------------------+
+| create_fit_card(outfit_suggestion)   |
++--------------------------------------+
+          |
+          | missing outfit?
+          +------------------------------+
+          |                              |
+          v                              |
+ [WARNING] Incomplete outfit            |
+          |                              |
+          v                              |
+ Return plain-text summary <------------+
+          |
+          |
+          v
++------------------------------+
+| Session State Update         |
+| fit_card                     |
++------------------------------+
+          |
+          v
++------------------+
+| Final Response   |
++------------------+
+```
 
 ## AI Tool Plan
 
