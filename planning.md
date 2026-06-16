@@ -100,18 +100,18 @@ The agent skips the price score and only reports the listing’s actual price.
 **How does information from one tool get passed to the next?**
 <!-- Describe how your agent stores and accesses state within a session. What data is tracked? How is it passed between tool calls? -->
 
----
+The agent stores important information in a shared state object as each tool runs. For example, the user’s request is parsed into search constraints, `search_listings` returns matching listings, the best listing is passed into `suggest_outfit` as `new_item`, and the outfit result is passed into `create_fit_card` for the final response.
+
 
 ## Error Handling
 
 For each tool, describe the specific failure mode you're handling and what the agent does in response.
 
 | Tool | Failure mode | Agent response |
-|------|-------------|----------------|
-| search_listings | No results match the query | |
-| suggest_outfit | Wardrobe is empty | |
-| create_fit_card | Outfit input is missing or incomplete | |
-
+|---|---|---|
+| search_listings | No results match the query | Broaden the search by relaxing style, size, or price constraints, then try again. If there are still no results, explain that no matches were found. |
+| suggest_outfit | Wardrobe is empty | Create a general outfit suggestion using only the new item instead of personalized wardrobe pieces. |
+| create_fit_card | Outfit input is missing or incomplete | Return a plain-text recommendation instead of a formatted fit card. |
 ---
 
 ## Architecture
@@ -140,11 +140,11 @@ For each tool, describe the specific failure mode you're handling and what the a
      search_listings() using load_listings() from the data loader — then test it against 3 queries
      before trusting it" is a plan. -->
 
-**Milestone 3 — Individual tool implementations:**
+**Milestone 3 — Individual tool implementations:** Implement `search_listings`, `suggest_outfit`, and `create_fit_card` separately. Each tool should have clear inputs, outputs, and fallback behavior.
 
 **Milestone 4 — Planning loop and state management:**
 
----
+Build the agent loop that decides which tool to call next based on the current state. The loop should pass outputs from one tool into the next and handle errors without crashing.
 
 ## A Complete Interaction (Step by Step)
 
@@ -154,12 +154,39 @@ Write out what a full user interaction looks like from start to finish — tool 
 
 **Step 1:**
 <!-- What does the agent do first? Which tool is called? With what input? -->
+The agent extracts constraints from the user request:
+- description: vintage graphic tee
+- max_price: 30
+- style preferences: baggy jeans, chunky sneakers
+
+Then it calls:
+
+`search_listings(description="vintage graphic tee", size="", max_price=30)`
 
 **Step 2:**
 <!-- What happens next? What was returned from step 1? What tool is called now? -->
+`search_listings` returns matching listings, such as a black vintage-style graphic tee for $24.
+
+The agent chooses the best match based on price, style tags, and condition.
 
 **Step 3:**
 <!-- Continue until the full interaction is complete -->
+The agent calls:
 
+`suggest_outfit(new_item=selected_listing, wardrobe=example_wardrobe)`
+
+The tool matches the tee with wardrobe pieces like baggy jeans and chunky white sneakers.
+
+**Step 4:**
+The agent calls:
+
+`create_fit_card(outfit=outfit_result)`
+
+This creates a polished final recommendation.
+
+### Final output to user:
+I found a black vintage-style graphic tee for $24. It fits your style because it matches your baggy jeans and chunky sneakers, and it stays under your $30 budget.
+
+Fit card: Pair the tee with baggy dark-wash jeans, chunky white sneakers, and a black crossbody bag for a relaxed streetwear look. I’d recommend this piece because it is affordable, versatile, and easy to style with clothes you already wear.
 **Final output to user:**
 <!-- What does the user actually see at the end? -->
