@@ -429,43 +429,7 @@ session["fit_card"] = fit_card_text
 **Fit card:**
 - A short shareable description explaining the outfit and why the item fits the user's style.
 
-## A Complete Interaction (Step by Step)
 
-Write out what a full user interaction looks like from start to finish — tool call by tool call. Use a specific example query.
-
-**Example user query:** "I'm looking for a vintage graphic tee under $30. I mostly wear baggy jeans and chunky sneakers. What's out there and how would I style it?"
-
-**Step 1:**
-<!-- What does the agent do first? Which tool is called? With what input? -->
-The agent extracts constraints from the user request:
-- description: vintage graphic tee
-- max_price: 30
-- style preferences: baggy jeans, chunky sneakers
-
-Then it calls:
-
-`search_listings(description="vintage graphic tee", size="", max_price=30)`
-
-**Step 2:**
-<!-- What happens next? What was returned from step 1? What tool is called now? -->
-`search_listings` returns matching listings, such as a black vintage-style graphic tee for $24.
-
-The agent chooses the best match based on price, style tags, and condition.
-
-**Step 3:**
-<!-- Continue until the full interaction is complete -->
-The agent calls:
-
-`suggest_outfit(new_item=selected_listing, wardrobe=example_wardrobe)`
-
-The tool matches the tee with wardrobe pieces like baggy jeans and chunky white sneakers.
-
-**Step 4:**
-The agent calls:
-
-`create_fit_card(outfit=outfit_result)`
-
-This creates a polished final recommendation.
 
 ### Final output to user:
 I found a black vintage-style graphic tee for $24. It fits your style because it matches your baggy jeans and chunky sneakers, and it stays under your $30 budget.
