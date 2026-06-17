@@ -243,11 +243,191 @@ For each tool, describe the specific failure mode you're handling and what the a
      search_listings() using load_listings() from the data loader — then test it against 3 queries
      before trusting it" is a plan. -->
 
-**Milestone 3 — Individual tool implementations:** Implement `search_listings`, `suggest_outfit`, and `create_fit_card` separately. Each tool should have clear inputs, outputs, and fallback behavior.
+**Milestone 3 — Individual tool implementations:** #### search_listings
 
-**Milestone 4 — Planning loop and state management:**
+**AI Tool:** ChatGPT
 
-Build the agent loop that decides which tool to call next based on the current state. The loop should pass outputs from one tool into the next and handle errors without crashing.
+**Input I'll provide:**
+- Tool 1 specification from `planning.md`
+- Listings schema
+- Error handling requirements
+
+**Expected output:**
+A function that loads listings using `load_listings()` and filters by description, size, and max_price.
+
+**Verification:**
+- Uses `load_listings()`
+- Applies all filters
+- Returns an empty list when no matches exist
+- Tested with multiple search queries
+
+#### suggest_outfit
+
+**AI Tool:** ChatGPT
+
+**Input I'll provide:**
+- Tool 2 specification
+- Wardrobe schema
+- Example wardrobe structure
+- Error handling requirements
+
+**Expected output:**
+A function that generates outfit recommendations using the selected item and wardrobe.
+
+**Verification:**
+- Accepts both `new_item` and `wardrobe`
+- Handles empty wardrobe gracefully
+- Produces readable styling recommendations
+
+#### create_fit_card
+
+**AI Tool:** ChatGPT
+
+**Input I'll provide:**
+- Tool 3 specification
+- Example output format
+- Error handling requirements
+
+**Expected output:**
+A function that generates a shareable fit card using the outfit suggestion and selected item.
+
+**Verification:**
+- Returns formatted text
+- Handles missing outfit input
+- Produces different outputs across multiple runs
+
+### Milestone 4 — Planning Loop and State Management
+
+**AI Tool:** ChatGPT
+
+**Input I'll provide:**
+- Full `planning.md`
+- Planning Loop section
+- State Management section
+- Architecture diagram
+
+**Expected output:**
+A complete implementation of `run_agent()` that follows the documented workflow.
+
+**Verification:**
+- Calls `search_listings()` first
+- Stops early when search returns no results
+- Stores outputs in the session dictionary
+- Calls `suggest_outfit()` only when a listing exists
+- Calls `create_fit_card()` only when an outfit exists
+- Matches the architecture diagram exactly
+
+---
+
+## A Complete Interaction (Step by Step)
+
+### Example User Query
+
+> "I'm looking for a vintage graphic tee under $30. I mostly wear baggy jeans and chunky sneakers. What's out there and how would I style it?"
+
+### Step 1: Parse Query
+
+The planning loop extracts:
+
+- description = `"vintage graphic tee"`
+- size = `None`
+- max_price = `30`
+
+**State update:**
+
+```python
+session["parsed"] = {
+    "description": "vintage graphic tee",
+    "size": None,
+    "max_price": 30
+}
+```
+
+### Step 2: Call search_listings
+
+**Input:**
+
+```python
+search_listings(
+    description="vintage graphic tee",
+    size=None,
+    max_price=30
+)
+```
+
+**Output:**
+
+```python
+[
+    {
+        "title": "Y2K Baby Tee — Butterfly Print",
+        "price": 18.0,
+        "platform": "depop"
+    }
+]
+```
+
+**State update:**
+
+```python
+session["search_results"] = results
+session["selected_item"] = results[0]
+```
+
+### Step 3: Call suggest_outfit
+
+**Input:**
+
+```python
+suggest_outfit(
+    new_item=session["selected_item"],
+    wardrobe=session["wardrobe"]
+)
+```
+
+**Output:**
+
+A styling recommendation using baggy jeans and chunky sneakers.
+
+**State update:**
+
+```python
+session["outfit_suggestion"] = outfit_text
+```
+
+### Step 4: Call create_fit_card
+
+**Input:**
+
+```python
+create_fit_card(
+    outfit=session["outfit_suggestion"],
+    new_item=session["selected_item"]
+)
+```
+
+**Output:**
+
+A formatted social-style fit card.
+
+**State update:**
+
+```python
+session["fit_card"] = fit_card_text
+```
+
+### Final Output to User
+
+**Top listing found:**
+- Y2K Baby Tee — Butterfly Print
+- $18.00
+- Depop
+
+**Outfit idea:**
+- Pair with baggy straight-leg jeans and chunky white sneakers.
+
+**Fit card:**
+- A short shareable description explaining the outfit and why the item fits the user's style.
 
 ## A Complete Interaction (Step by Step)
 
