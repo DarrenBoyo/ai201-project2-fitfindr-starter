@@ -245,7 +245,7 @@ For each tool, describe the specific failure mode you're handling and what the a
 
 **Milestone 3 — Individual tool implementations:** #### search_listings
 
-**AI Tool:** ChatGPT
+**AI Tool:** Claude
 
 **Input I'll provide:**
 - Tool 1 specification from `planning.md`
@@ -263,7 +263,7 @@ A function that loads listings using `load_listings()` and filters by descriptio
 
 #### suggest_outfit
 
-**AI Tool:** ChatGPT
+**AI Tool:** Claude
 
 **Input I'll provide:**
 - Tool 2 specification
@@ -281,7 +281,7 @@ A function that generates outfit recommendations using the selected item and war
 
 #### create_fit_card
 
-**AI Tool:** ChatGPT
+**AI Tool:** Claude
 
 **Input I'll provide:**
 - Tool 3 specification
@@ -298,7 +298,7 @@ A function that generates a shareable fit card using the outfit suggestion and s
 
 ### Milestone 4 — Planning Loop and State Management
 
-**AI Tool:** ChatGPT
+**AI Tool:** Claude
 
 **Input I'll provide:**
 - Full `planning.md`
