@@ -416,20 +416,6 @@ A formatted social-style fit card.
 session["fit_card"] = fit_card_text
 ```
 
-### Final Output to User
-
-**Top listing found:**
-- Y2K Baby Tee — Butterfly Print
-- $18.00
-- Depop
-
-**Outfit idea:**
-- Pair with baggy straight-leg jeans and chunky white sneakers.
-
-**Fit card:**
-- A short shareable description explaining the outfit and why the item fits the user's style.
-
-
 
 ### Final output to user:
 I found a black vintage-style graphic tee for $24. It fits your style because it matches your baggy jeans and chunky sneakers, and it stays under your $30 budget.
